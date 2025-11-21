@@ -13,7 +13,7 @@ uv sync
 Then start the project in development mode:
 
 ```
-uv run fastapi dev main.py
+uv run fastapi dev app.py
 ```
 
 # Container

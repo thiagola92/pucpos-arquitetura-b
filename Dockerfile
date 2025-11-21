@@ -6,4 +6,4 @@ COPY . .
 
 RUN uv sync
 
-CMD ["uv", "run", "fastapi", "run", "main.py"]
+CMD ["uv", "run", "fastapi", "run", "app.py"]
