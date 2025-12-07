@@ -16,6 +16,10 @@ Then start the project in development mode:
 uv run fastapi dev app.py
 ```
 
+This will watch the project directory and restart as necessary.
+
+Access through http://127.0.0.1:8000
+
 # Container
 
 ```
@@ -41,3 +45,4 @@ sudo docker image rm pucpos-b
 - https://fastapi.tiangolo.com/
 - https://fakestoreapi.com/
 - https://fastapi.tiangolo.com/tutorial/security/first-steps/
+- https://fastapi.tiangolo.com/advanced/additional-status-codes/

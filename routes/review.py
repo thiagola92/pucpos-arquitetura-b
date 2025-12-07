@@ -1,7 +1,9 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, status, HTTPException
 from sqlmodel import Session, select
+from sqlalchemy.exc import IntegrityError
+from fastapi.responses import JSONResponse
 
 from auth import AccessToken, get_access_token
 from engine import engine
@@ -22,7 +24,16 @@ def get(product_id: int, token: Annotated[AccessToken, Depends(get_access_token)
 
         review = session.exec(statement).first()
 
-    return review
+        if review is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="No review, from this user, found for this product",
+            )
+
+    return JSONResponse(
+        status_code=status.HTTP_200_OK,
+        content=review.model_dump(),
+    )
 
 
 @router.post("/review/")
@@ -34,12 +45,21 @@ def post(body: PostBody, token: Annotated[AccessToken, Depends(get_access_token)
         comment=body.comment,
     )
 
-    with Session(engine) as session:
-        session.add(review)
-        session.commit()
-        session.refresh(review)
+    try:
+        with Session(engine) as session:
+            session.add(review)
+            session.commit()
+            session.refresh(review)
+    except IntegrityError:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Review already exist",
+        )
 
-    return review
+    return JSONResponse(
+        status_code=status.HTTP_201_CREATED,
+        content=review.model_dump(),
+    )
 
 
 @router.put("/review/{product_id}")
@@ -52,15 +72,22 @@ def put(body: PutBody, token: Annotated[AccessToken, Depends(get_access_token)])
 
         review = session.exec(statement).first()
 
-        if review:
-            review.rating = body.rating
-            review.comment = body.comment
+        if review is None:
+            return JSONResponse(
+                status_code=status.HTTP_404_NOT_FOUND,
+                content=review.model_dump(),
+            )
 
-            session.commit()
-            session.refresh(review)
+        review.rating = body.rating
+        review.comment = body.comment
 
-            return review
-    return 404
+        session.commit()
+        session.refresh(review)
+
+        return JSONResponse(
+            status_code=status.HTTP_204_NO_CONTENT,
+            content=review.model_dump(),
+        )
 
 
 @router.delete("/review/{product_id}")
@@ -73,8 +100,16 @@ def delete(product_id: int, token: Annotated[AccessToken, Depends(get_access_tok
 
         review = session.exec(statement).first()
 
-        if review:
-            session.delete(review)
-            session.commit()
-            return 204
-        return 404
+        if review is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="No review, from this user, found for this product",
+            )
+
+        session.delete(review)
+        session.commit()
+
+        return JSONResponse(
+            status_code=status.HTTP_204_NO_CONTENT,
+            content=review.model_dump(),
+        )

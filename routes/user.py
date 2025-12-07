@@ -1,7 +1,8 @@
 from pwdlib import PasswordHash
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, status
 from sqlmodel import Session
 from sqlalchemy.exc import IntegrityError
+from fastapi.responses import JSONResponse
 
 from engine import engine
 from rows.user import Row
@@ -25,7 +26,15 @@ def post(body: PostBody):
             session.add(user)
             session.commit()
             session.refresh(user)
-
-        return PostResponse(**user.model_dump())
     except IntegrityError:
-        raise HTTPException(status_code=409, detail="Username already in use")
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Username already in use",
+        )
+
+    response = PostResponse(**user.model_dump())
+
+    return JSONResponse(
+        status_code=status.HTTP_201_CREATED,
+        content=response.model_dump(),
+    )
