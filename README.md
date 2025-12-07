@@ -40,3 +40,4 @@ sudo docker image rm pucpos-b
 
 - https://fastapi.tiangolo.com/
 - https://fakestoreapi.com/
+- https://fastapi.tiangolo.com/tutorial/security/first-steps/

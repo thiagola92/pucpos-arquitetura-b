@@ -1,6 +1,9 @@
-from fastapi import APIRouter
+from typing import Annotated
+
+from fastapi import APIRouter, Depends
 from sqlmodel import Session, select
 
+from auth import AccessToken, get_access_token
 from engine import engine
 from rows.review import Row
 from bodies.review import PostBody, PutBody
@@ -10,11 +13,11 @@ router = APIRouter()
 
 
 @router.get("/review/{product_id}")
-def get(product_id: int):
+def get(product_id: int, token: Annotated[AccessToken, Depends(get_access_token)]):
     with Session(engine) as session:
         statement = select(Row).where(
             Row.product_id == product_id,
-            Row.owner_id == 0,
+            Row.owner_id == token.user_id,
         )
 
         review = session.exec(statement).first()
@@ -23,10 +26,10 @@ def get(product_id: int):
 
 
 @router.post("/review/")
-def post(body: PostBody):
+def post(body: PostBody, token: Annotated[AccessToken, Depends(get_access_token)]):
     review = Row(
         product_id=body.product_id,
-        owner_id=0,
+        owner_id=token.user_id,
         rating=body.rating,
         comment=body.comment,
     )
@@ -40,11 +43,11 @@ def post(body: PostBody):
 
 
 @router.put("/review/{product_id}")
-def put(body: PutBody):
+def put(body: PutBody, token: Annotated[AccessToken, Depends(get_access_token)]):
     with Session(engine) as session:
         statement = select(Row).where(
             Row.product_id == body.product_id,
-            Row.owner_id == 0,
+            Row.owner_id == token.user_id,
         )
 
         review = session.exec(statement).first()
@@ -61,11 +64,11 @@ def put(body: PutBody):
 
 
 @router.delete("/review/{product_id}")
-def delete(product_id: int):
+def delete(product_id: int, token: Annotated[AccessToken, Depends(get_access_token)]):
     with Session(engine) as session:
         statement = select(Row).where(
             Row.product_id == product_id,
-            Row.owner_id == 0,
+            Row.owner_id == token.user_id,
         )
 
         review = session.exec(statement).first()
