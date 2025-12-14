@@ -55,8 +55,8 @@ def create_access_token(
 
     token = jwt.encode(payload, SECRET_KEY, ALGORITHM)
 
-    print(payload)
-    print(token)
+    print("create_access_token", "payload", payload)
+    print("create_access_token", "token", token)
 
     return token
 
@@ -65,12 +65,14 @@ async def open_access_token(
     token: Annotated[str, Depends(oauth2_scheme)],
 ) -> AccessToken:
     try:
-        print(token)
+        print("open_access_token", "token", token)
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        print("open_access_token", "payload", payload)
         print(payload)
         return AccessToken(**payload)
-    except InvalidTokenError:
-        print(token)
+    except InvalidTokenError as e:
+        print("open_access_token", "token", "error", token)
+        print(e)
         raise CREDENTIALS_EXCEPTION
 
 
