@@ -20,6 +20,10 @@ This will watch the project directory and restart as necessary.
 
 Access through http://127.0.0.1:8000
 
+> [!IMPORTANT]
+> Environment variable `SECRET_KEY` is used to encrypt JWT. If not defined, it
+> will use a default a hardcoded key (which is not recommended).
+
 # Container
 
 ```
