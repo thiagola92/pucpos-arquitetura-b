@@ -55,9 +55,6 @@ def create_access_token(
 
     token = jwt.encode(payload, SECRET_KEY, ALGORITHM)
 
-    print("create_access_token", "payload", payload)
-    print("create_access_token", "token", token)
-
     return token
 
 
@@ -65,9 +62,7 @@ async def open_access_token(
     token: Annotated[str, Depends(oauth2_scheme)],
 ) -> AccessToken:
     try:
-        print("open_access_token", "token", token)
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        print("open_access_token", "payload", payload)
         print(payload)
         return AccessToken(**payload)
     except InvalidTokenError as e:

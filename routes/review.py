@@ -84,7 +84,7 @@ def put(body: PutBody, token: Annotated[AccessToken, Depends(get_access_token)])
         session.commit()
         session.refresh(review)
 
-        return JSONResponse(status_code=status.HTTP_204_NO_CONTENT)
+        return JSONResponse(status_code=status.HTTP_200_OK, content="")
 
 
 @router.delete("/review/{product_id}")
@@ -106,4 +106,4 @@ def delete(product_id: int, token: Annotated[AccessToken, Depends(get_access_tok
         session.delete(review)
         session.commit()
 
-        return JSONResponse(status_code=status.HTTP_204_NO_CONTENT)
+        return JSONResponse(status_code=status.HTTP_200_OK, content="")
