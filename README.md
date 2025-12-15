@@ -27,11 +27,14 @@ Access through http://127.0.0.1:8000
 # Container
 
 ```shell
+# Create network (if doesn't exist)
+sudo docker network create --driver bridge pucpos
+
 # Build image
 sudo docker image build --tag "pucpos-b" .
 
 # Create container
-sudo docker container create --publish 8000:8000 --name "pucpos-b" pucpos-b
+sudo docker container create --network pucpos --publish 8000:8000 --name "pucpos-b" pucpos-b
 
 # Start container
 sudo docker container start --attach pucpos-b
@@ -42,6 +45,7 @@ sudo docker container start --attach pucpos-b
 sudo docker container stop pucpos-b
 sudo docker container rm pucpos-b
 sudo docker image rm pucpos-b
+sudo docker network rm pucpos
 ```
 
 # References
