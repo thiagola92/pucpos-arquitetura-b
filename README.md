@@ -26,7 +26,7 @@ Access through http://127.0.0.1:8000
 
 # Container
 
-```
+```shell
 # Build image
 sudo docker image build --tag "pucpos-b" .
 
@@ -37,7 +37,7 @@ sudo docker container create --publish 8000:8000 --name "pucpos-b" pucpos-b
 sudo docker container start --attach pucpos-b
 ```
 
-```
+```shell
 # Remove container and image
 sudo docker container stop pucpos-b
 sudo docker container rm pucpos-b
