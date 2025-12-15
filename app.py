@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from sqlmodel import SQLModel
+from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 from engine import engine
@@ -29,4 +30,4 @@ SQLModel.metadata.create_all(engine)
 
 @app.get("/")
 def read_root():
-    return {"Hello": "World"}
+    return HTMLResponse(content='Go to <a href="/docs">/docs</a>', status_code=200)
