@@ -1,4 +1,7 @@
 # pucpos-arquitetura-b
+Back-End for **Fresh Store**, recommended to use through our [Front-End](https://github.com/thiagola92/pucpos-arquitetura-f). It's responsible for interacting with the Database, storing new users and reviews.
+
+This project uses [FastAPI](https://github.com/thiagola92/pucpos-arquitetura-b) as framework and store everything locally in a [SQLite](https://sqlite.org/) database.
 
 # Usage
 
