@@ -1,7 +1,13 @@
 # pucpos-arquitetura-b
-Back-End for **Fresh Store**, recommended to use through our [Front-End](https://github.com/thiagola92/pucpos-arquitetura-f). It's responsible for interacting with the Database, storing new users and reviews.
 
-This project uses [uv](https://docs.astral.sh/uv/guides/install-python/) as Python package manager and [FastAPI](https://github.com/thiagola92/pucpos-arquitetura-b) as framework (it stores everything locally in a [SQLite](https://sqlite.org/) database).
+Back-End for **Fresh Store**, recommended to use through our
+[Front-End](https://github.com/thiagola92/pucpos-arquitetura-f). It's
+responsible for interacting with the Database, storing new users and reviews.
+
+This project uses [uv](https://docs.astral.sh/uv/guides/install-python/) as
+Python package manager and
+[FastAPI](https://github.com/thiagola92/pucpos-arquitetura-b) as framework (it
+stores everything locally in a [SQLite](https://sqlite.org/) database).
 
 # Usage
 
